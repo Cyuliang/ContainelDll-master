@@ -63,6 +63,8 @@ namespace ContainelDll
         /// <param name="Ip">服务器地址</param>
         /// <param name="Port">服务器端口</param>
         /// <param name="Intervals">间隔时间</param>
+        /// <param name="LocalIp">本机绑定地址</param>
+        /// <param name="LocalPort">本机绑定端口</param>
         public Container(string Ip, int Port,int Intervals,string LocalIp="127.0.0.1",int LocalPort=12000)
         {
             IPE = new IPEndPoint(IPAddress.Parse(Ip), Port);
