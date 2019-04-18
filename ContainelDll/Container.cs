@@ -65,11 +65,20 @@ namespace ContainelDll
         /// <param name="Intervals">间隔时间</param>
         /// <param name="LocalIp">本机绑定地址</param>
         /// <param name="LocalPort">本机绑定端口</param>
-        public Container(string Ip, int Port,int Intervals,string Local_Ip_bing = "127.0.0.1", int Local_Port_bing = 12000)
+        public Container(string Ip, int Port,int Intervals)
         {
             IPE = new IPEndPoint(IPAddress.Parse(Ip), Port);
-            LocalIPE = new IPEndPoint(IPAddress.Parse(Local_Ip_bing), Local_Port_bing);
             _Timer = new System.Threading.Timer(AsyncConect2server, null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(Intervals));
+        }
+
+        /// <summary>
+        /// 绑定本机IP和端口
+        /// </summary>
+        /// <param name="Local_Ip_bing"></param>
+        /// <param name="Local_Port_bing"></param>
+        public void Socket_Bing(string Local_Ip_bing = "127.0.0.1", int Local_Port_bing = 12000)
+        {
+            LocalIPE = new IPEndPoint(IPAddress.Parse(Local_Ip_bing), Local_Port_bing);
         }
 
         /// <summary>
@@ -103,6 +112,7 @@ namespace ContainelDll
             catch (SocketException ex)
             {
                 Client.Close();
+                Client = null;
                 MessageEventFunC(System.Reflection.MethodBase.GetCurrentMethod().Name, string.Format("An error occurred when attempting to access the socket：{0}\r\n", ex.ToString()));
 
                 SocketStatusEventFunC(false);
@@ -110,6 +120,7 @@ namespace ContainelDll
             catch (ObjectDisposedException ex)
             {
                 Client.Close();
+                Client = null;
                 MessageEventFunC(System.Reflection.MethodBase.GetCurrentMethod().Name, string.Format("The Socket has been closed：{0}\r\n", ex.ToString()));
 
                 SocketStatusEventFunC(false);
@@ -136,6 +147,7 @@ namespace ContainelDll
             catch (Exception ex)
             {
                 Client.Close();
+                Client = null;
                 MessageEventFunC(System.Reflection.MethodBase.GetCurrentMethod().Name, string.Format("link error：{0}\r\n", ex.ToString()));
 
                 SocketStatusEventFunC(false);
@@ -178,6 +190,7 @@ namespace ContainelDll
                 else
                 {
                     Client.Close();
+                    Client = null;
                     _Timer.Change(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
                     //MessageEventFunC(System.Reflection.MethodBase.GetCurrentMethod().Name, "link of close \r\n");
 
@@ -187,6 +200,7 @@ namespace ContainelDll
             catch (Exception /*ex*/)
             {
                 Client.Close();
+                Client = null;
                 _Timer.Change(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
                 //MessageEventFunC(System.Reflection.MethodBase.GetCurrentMethod().Name, ex.ToString());
 
