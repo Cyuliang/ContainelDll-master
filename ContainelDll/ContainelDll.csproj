@@ -12,4 +12,10 @@
     <PackageLicenseUrl>www.szocr.com</PackageLicenseUrl>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Release\**" />
+    <EmbeddedResource Remove="Release\**" />
+    <None Remove="Release\**" />
+  </ItemGroup>
+
 </Project>

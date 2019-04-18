@@ -25,6 +25,7 @@ namespace ContainelDll
         #region//变量
         private System.Threading.Timer _Timer = null;                       //定时重连
         private IPEndPoint IPE = null;                                      //IP,PORT
+        private IPEndPoint LocalIPE = null;                                 //本机IP，PORT
         private Socket Client = null;                                       //SOCKET
         #endregion
 
@@ -62,9 +63,10 @@ namespace ContainelDll
         /// <param name="Ip">服务器地址</param>
         /// <param name="Port">服务器端口</param>
         /// <param name="Intervals">间隔时间</param>
-        public Container(string Ip, int Port,int Intervals)
+        public Container(string Ip, int Port,int Intervals,string LocalIp="127.0.0.1",int LocalPort=12000)
         {
             IPE = new IPEndPoint(IPAddress.Parse(Ip), Port);
+            LocalIPE = new IPEndPoint(IPAddress.Parse(LocalIp), LocalPort);
             _Timer = new System.Threading.Timer(AsyncConect2server, null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(Intervals));
         }
 
@@ -74,6 +76,7 @@ namespace ContainelDll
         private void AsyncConect2server(object state)
         {
             Client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Client.Bind(LocalIPE);
             IAsyncResult ar = Client.BeginConnect(IPE, new AsyncCallback(ConnectCallBack), Client);
             MessageEventFunC(System.Reflection.MethodBase.GetCurrentMethod().Name,"Start Link To Socket Server");
             ar.AsyncWaitHandle.WaitOne();
