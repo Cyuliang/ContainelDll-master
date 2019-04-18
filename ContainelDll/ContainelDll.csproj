@@ -13,9 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Release\**" />
-    <EmbeddedResource Remove="Release\**" />
-    <None Remove="Release\**" />
+    <Compile Remove="release_dll\**" />
+    <EmbeddedResource Remove="release_dll\**" />
+    <None Remove="release_dll\**" />
   </ItemGroup>
 
 </Project>
