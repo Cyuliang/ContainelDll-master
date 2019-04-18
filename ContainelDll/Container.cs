@@ -65,9 +65,17 @@ namespace ContainelDll
         /// <param name="Intervals">间隔时间</param>
         /// <param name="LocalIp">本机绑定地址</param>
         /// <param name="LocalPort">本机绑定端口</param>
-        public Container(string Ip, int Port,int Intervals,string Local_Ip_bing = "127.0.0.1", int Local_Port_bing = 12000)
+        public Container(string Ip, int Port,int Intervals,string Local_Ip_bing,int Local_Port_bing)
         {
             IPE = new IPEndPoint(IPAddress.Parse(Ip), Port);
+            if(string.IsNullOrEmpty(Local_Ip_bing))
+            {
+                Local_Ip_bing = "127.0.0.1";
+            }
+            if(Local_Port_bing<=0)
+            {
+                Local_Port_bing = 12000;
+            }
             LocalIPE = new IPEndPoint(IPAddress.Parse(Local_Ip_bing), Local_Port_bing);
             _Timer = new System.Threading.Timer(AsyncConect2server, null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(Intervals));
         }
